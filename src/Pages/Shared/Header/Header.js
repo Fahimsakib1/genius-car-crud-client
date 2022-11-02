@@ -6,14 +6,33 @@ import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 
 const Header = () => {
 
+    const { user } = useContext(AuthContext);
+    console.log("User From Header Page", user);
+
 
     const menuItems = <>
-        <li className='font-semibold'> <Link to='/'>Home</Link></li>
-        <li className='font-semibold'> <Link to='/about'>About</Link></li>
-        <li className='font-semibold'> <Link to='/services'>Services</Link></li>
-        <li className='font-semibold'> <Link to='/contact'>Contact</Link></li>
-        <li className='font-semibold'> <Link to='/login'>Login</Link></li>
-        <li className='font-semibold'> <Link to='/signup'>Sign Up</Link></li>
+        <li className='font-semibold mr-6'> <Link to='/'>Home</Link></li>
+        <li className='font-semibold mr-6'> <Link to='/about'>About</Link></li>
+        <li className='font-semibold mr-6'> <Link to='/services'>Services</Link></li>
+        {
+            user?.email ?
+                <>
+                    <li className='font-semibold mr-6'> <Link to='/orders'>Orders</Link></li>
+
+                    <li className='font-bold text-red-600 mr-6'> <Link to='/logout'>Logout</Link></li>
+                </>
+
+                :
+                <>
+                    <li className='font-bold text-blue-800 mr-6'> <Link to='/login'>Login</Link></li>
+                    
+                    <li className='font-bold text-purple-800 mr-6'> <Link to='/signup'>Sign Up</Link></li>
+                </>
+        }
+
+        {
+            user?.email && <p className='text-blue-800 font-semibold my-auto'>Welcome, {user.email}</p>
+        }
     </>
 
     return (

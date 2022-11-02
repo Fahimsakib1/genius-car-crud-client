@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import login from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 const Login = () => {
 
