@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
 
@@ -10,6 +10,8 @@ const Checkout = () => {
 
     const service = useLoaderData();
     //console.log(service);
+
+    const navigate = useNavigate();
 
     const { description, img, price, title, facility, _id } = service;
 
@@ -43,12 +45,17 @@ const Checkout = () => {
         fetch('http://localhost:5000/orders', {
             method: "POST",
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('genius-token')}`
             },
             body: JSON.stringify(order)
         })
         .then(res => res.json())
         .then(data => {
+            
+            //data er moddhe token na thakle nicher line er moddhe Unauthorized Access kotha ta show korbe r jodi token thake tahole nicher line er moddhe acknowledged: true, show korbe
+            console.log(data)
+            
             if(data.acknowledged){
                 console.log(data)
                 Swal.fire(
@@ -57,6 +64,7 @@ const Checkout = () => {
                     'success'
                 )
                 event.target.reset();
+                navigate('/')
             }
 
             else{

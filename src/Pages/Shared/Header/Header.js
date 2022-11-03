@@ -1,13 +1,36 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import logo from '../../../assets/logo.svg'
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
+import Swal from 'sweetalert2';
 
 
 const Header = () => {
 
-    const { user } = useContext(AuthContext);
+    const { user, logoutUser } = useContext(AuthContext);
     console.log("User From Header Page", user);
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logoutUser()
+        .then( () => {
+            Swal.fire(
+                'Good job!',
+                'Sign Out Done',
+                'success'
+            )
+            navigate('/')
+        })
+        .catch(error => {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops... Log out Failed',
+                text: 'Something went wrong!',
+            })
+        })
+    }
 
 
     const menuItems = <>
@@ -19,13 +42,17 @@ const Header = () => {
                 <>
                     <li className='font-semibold mr-6'> <Link to='/orders'>Orders</Link></li>
 
-                    <li className='font-bold text-red-600 mr-6'> <Link to='/logout'>Logout</Link></li>
+                    <li className='font-bold text-red-600 mr-6'>
+                        <button
+                            onClick={handleLogout}
+                            className='btn-ghost'>Logout</button>
+                    </li>
                 </>
 
                 :
                 <>
                     <li className='font-bold text-blue-800 mr-6'> <Link to='/login'>Login</Link></li>
-                    
+
                     <li className='font-bold text-purple-800 mr-6'> <Link to='/signup'>Sign Up</Link></li>
                 </>
         }

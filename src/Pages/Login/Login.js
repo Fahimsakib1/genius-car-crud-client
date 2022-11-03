@@ -1,14 +1,20 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import login from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
 
 const Login = () => {
 
-    const {loginUser} = useContext(AuthContext);
+    const { loginUser } = useContext(AuthContext);
     const [error, setError] = useState('');
-    
+
+    //login korar por jei page e redirect korbo tar code 
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || '/';
+
+
     const handleLogin = (event) => {
         event.preventDefault();
         const email = event.target.email.value;
@@ -16,26 +22,53 @@ const Login = () => {
         console.log(email, password);
 
         loginUser(email, password)
-        .then(result => {
-            const user = result.user;
-            console.log("User from Login page", user);
+            .then(result => {
+                const user = result.user;
+                console.log("User from Login page", user);
+
+                const currentUser = {
+                    email: user?.email
+                }
+
+                console.log("User Email from Login page", user.email);
+
+                //get jwt token in client side
+                fetch('http://localhost:5000/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Token received from server side", data.token)
+
+                        //local storage is the easiest but not the best place to store jwt token
+                        localStorage.setItem('genius-token', data.token);
+
+                        navigate(from, {replace: true});
+                    })
+
+
                 Swal.fire(
                     'Good job!',
                     'Login Successful',
                     'success'
                 )
-                setError('')
+                setError('');
                 event.target.reset();
-        })
-
-        .catch(error => {
-            setError(error.message);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops... Login Failed',
-                text: 'Something went wrong!',
             })
-        })
+
+
+            .catch(error => {
+                setError(error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... Login Failed',
+                    text: 'Something went wrong!',
+                })
+            })
     }
 
 
@@ -56,13 +89,13 @@ const Login = () => {
                             <label className="label">
                                 <span className="label-text font-bold">Email</span>
                             </label>
-                            <input name="email" type="text" placeholder="Enter Email" className="input input-bordered" required/>
+                            <input name="email" type="text" placeholder="Enter Email" className="input input-bordered" required />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text font-bold">Password</span>
                             </label>
-                            <input name="password" type="text" placeholder="Enter Password" className="input input-bordered" required/>
+                            <input name="password" type="password" placeholder="Enter Password" className="input input-bordered" required />
                             <label className="label">
                                 <Link className="label-text-alt link link-hover">Forgot password?</Link>
                             </label>

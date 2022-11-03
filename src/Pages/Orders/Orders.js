@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 const Orders = () => {
 
-    const { user } = useContext(AuthContext);
+    const { user, logoutUser } = useContext(AuthContext);
     const [orders, setOrders] = useState([]); //useState({}) ei vabe dile thik moto kaj kore na 
 
     // console.log("User From Order Page", user)
@@ -16,17 +16,34 @@ const Orders = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/orders?email=${user?.email}`)
-            .then(res => res.json())
-            .then(data => setOrders(data))
-    }, [user?.email])
+        fetch(`http://localhost:5000/orders?email=${user?.email}`, {
+            
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('genius-token')}`
+            }
+        })
+            .then(res => {
+                if(res.status === 401 || res.status === 403 ){
+                    return logoutUser();
+                }
+                return res.json()
+            })
+            .then(data => {
+                console.log("Data inside order page in client side", data)
+                setOrders(data)
+            })
+    }, [user?.email, logoutUser])
 
+    
 
     const handleDelete = (id) => {
         const proceed = window.confirm("Are you sure you want to cancel this order");
         if(proceed){
             fetch(`http://localhost:5000/orders/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('genius-token')}`
+                }
             })
             .then(res => res.json())
             .then(data => {
@@ -58,7 +75,8 @@ const Orders = () => {
         fetch(`http://localhost:5000/orders/${id}`, {
             method: 'PATCH',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('genius-token')}`
             },
 
             body: JSON.stringify({status: 'Approved'})
@@ -85,6 +103,8 @@ const Orders = () => {
             }
         })
     }
+
+
 
     return (
         <div>
