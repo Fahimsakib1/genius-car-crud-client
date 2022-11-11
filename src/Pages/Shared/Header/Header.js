@@ -37,6 +37,7 @@ const Header = () => {
         <li className='font-semibold mr-6'> <Link to='/'>Home</Link></li>
         <li className='font-semibold mr-6'> <Link to='/about'>About</Link></li>
         <li className='font-semibold mr-6'> <Link to='/services'>Services</Link></li>
+        
         {
             user?.email ?
                 <>
@@ -61,6 +62,8 @@ const Header = () => {
             user?.email && <p className='text-blue-800 font-semibold my-auto'>Welcome, {user.email}</p>
         }
     </>
+
+
 
     return (
         <div>

@@ -17,6 +17,7 @@ const Checkout = () => {
 
     
     const handlePlaceOrder = (event) => {
+        
         event.preventDefault();
         const name = `${event.target.firstName.value} ${event.target.lastName.value}`;
         const email = user?.email || 'Unregistered User';
@@ -42,7 +43,7 @@ const Checkout = () => {
         //     })
         // }
 
-        fetch('http://localhost:5000/orders', {
+        fetch('https://genius-car-jwt-token-vercel-deploy-server.vercel.app/orders', {
             method: "POST",
             headers: {
                 'content-type': 'application/json',

@@ -9,7 +9,7 @@ const OrderRow = ({ order, handleDelete, handleStatusUpdate }) => {
 
     // checkout page er moddhe ami jei service er details show korchilam oi khane database er moddhe service er ekta id chilo shei id tai ei page er moddhe useEffect diye data fetch kore service er image gula table er moddhe show korano hoiche.. Service er image er dekhanor jonnoi ei kaj ta kora hoiche. 
     useEffect(() => {
-        fetch(`http://localhost:5000/services/${service}`)
+        fetch(`https://genius-car-jwt-token-vercel-deploy-server.vercel.app/services/${service}`)
             .then(res => res.json())
             .then(data => setOrderService(data))
     }, [service])
@@ -27,6 +27,7 @@ const OrderRow = ({ order, handleDelete, handleStatusUpdate }) => {
                     className='text-2xl text-red-500 hover:text-red-800'></ImCancelCircle>
                 </label>
             </th>
+
             <td>
                 <div className="flex items-center space-x-3">
                     <div className="avatar">
@@ -43,11 +44,13 @@ const OrderRow = ({ order, handleDelete, handleStatusUpdate }) => {
                     </div>
                 </div>
             </td>
+
             <td>
                 <span className='font-semibold'>{name}</span>
                 <br />
                 <span className="badge badge-ghost badge-sm">Mobile: {phone}</span>
             </td>
+            
             <td>{email}</td>
             <th>
                 <button onClick={() => handleStatusUpdate(_id)} className={status ? "btn btn-ghost btn-sm text-green-600" : "btn btn-ghost btn-sm text-red-600"}>{status ? status : 'Pending'}</button>

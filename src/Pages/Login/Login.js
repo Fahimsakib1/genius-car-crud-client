@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import login from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
+import SocialLoginToken from '../Shared/SocialLoginToken/SocialLoginToken';
 
 const Login = () => {
 
@@ -32,8 +33,9 @@ const Login = () => {
 
                 console.log("User Email from Login page", user.email);
 
+                
                 //get jwt token in client side
-                fetch('http://localhost:5000/jwt', {
+                fetch('https://genius-car-jwt-token-vercel-deploy-server.vercel.app/jwt', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'
@@ -46,7 +48,6 @@ const Login = () => {
 
                         //local storage is the easiest but not the best place to store jwt token
                         localStorage.setItem('genius-token', data.token);
-
                         navigate(from, {replace: true});
                     })
 
@@ -112,6 +113,10 @@ const Login = () => {
                     </form>
                     <div className='text-center mb-8'>
                         <p>New to Genius Car?  <Link to='/signup' className='text-orange-400 font-semibold'>Sign Up</Link></p>
+                    </div>
+
+                    <div>
+                        <SocialLoginToken></SocialLoginToken>
                     </div>
                 </div>
             </div>
