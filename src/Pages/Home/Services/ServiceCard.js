@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaArrowRight } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 
 
@@ -10,7 +11,11 @@ const ServiceCard = ({ service }) => {
     const { title, price, img, _id } = service;
 
     return (
-        <div className=''>
+        <motion.div
+            initial={{ opacity: 0, scale: 0.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className=''>
             <div className="card card-compact w-96 bg-base-100 shadow-xl mb-12">
                 <figure><img src={img} alt="service" /></figure>
                 <div className="card-body">
@@ -23,7 +28,7 @@ const ServiceCard = ({ service }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

@@ -4,6 +4,7 @@ import login from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
 import SocialLoginToken from '../Shared/SocialLoginToken/SocialLoginToken';
+import { motion } from 'framer-motion';
 
 const Login = () => {
 
@@ -33,7 +34,7 @@ const Login = () => {
 
                 console.log("User Email from Login page", user.email);
 
-                
+
                 //get jwt token in client side
                 fetch('https://genius-car-jwt-token-vercel-deploy-server.vercel.app/jwt', {
                     method: 'POST',
@@ -48,7 +49,7 @@ const Login = () => {
 
                         //local storage is the easiest but not the best place to store jwt token
                         localStorage.setItem('genius-token', data.token);
-                        navigate(from, {replace: true});
+                        navigate(from, { replace: true });
                     })
 
 
@@ -74,13 +75,23 @@ const Login = () => {
 
 
     return (
-        <div className="hero my-24">
+        <div className="hero mb-24">
             <div className="hero-content flex-col lg:flex-row-reverse grid md:grid-cols-2 gap-24">
-                <div className="text-center lg:text-left">
-                    <img className='w-3/4' src={login} alt="" />
-                </div>
 
-                <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1.2 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center lg:text-left">
+                    <img className='w-3/4' src={login} alt="" />
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 2.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+
+                    className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                     <h1 className="text-4xl font-bold text-center">Login</h1>
 
                     <form
@@ -118,7 +129,7 @@ const Login = () => {
                     <div>
                         <SocialLoginToken></SocialLoginToken>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

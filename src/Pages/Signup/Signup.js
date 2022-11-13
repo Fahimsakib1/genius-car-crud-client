@@ -4,6 +4,9 @@ import login from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
 import { setAuthToken } from '../../utilities/auth';
+import { motion } from 'framer-motion';
+
+
 
 const Signup = () => {
 
@@ -29,7 +32,7 @@ const Signup = () => {
                 const user = result.user;
                 console.log("User from sign up page", user);
 
-                
+
                 //jwt token er jonno auth.js page er moddhe function create kore shei function k use kora holo
                 setAuthToken(user)
 
@@ -74,13 +77,22 @@ const Signup = () => {
 
 
     return (
-        <div className="hero my-24">
+        <div className="hero mb-24">
             <div className="hero-content flex-col lg:flex-row-reverse grid md:grid-cols-2 gap-24">
-                <div className="text-center lg:text-left">
-                    <img className='w-3/4' src={login} alt="" />
-                </div>
 
-                <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                <motion.div
+                    initial={{ opacity: 0, scale: 2.5 }}
+                    animate={{ opacity: 1, scale: 1.2 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center lg:text-left">
+                    <img className='w-3/4' src={login} alt="" />
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1.1 }}
+                    transition={{ duration: 0.5 }}
+                    className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                     <h1 className="text-4xl font-bold text-center">Sign Up</h1>
 
                     <form
@@ -123,7 +135,7 @@ const Signup = () => {
                     <div className='text-center mb-8'>
                         <p>Already have an account?  <Link to='/login' className='text-orange-400 font-semibold'>Login</Link></p>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );
